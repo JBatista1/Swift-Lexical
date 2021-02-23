@@ -12,8 +12,9 @@ import java.io.File;
 public class Principal {
     
     public static void main(String[] args) {
-        String path = "C:/Users/joao batista/Documents/NetBeansProjects/AnalisadorLexicoSwift/src/codigo/Lexer.flex";
-        generateLexex(path);
+        String path = "src/codigo/";
+        String arquivo = path + "Lexer.flex";
+        generateLexex(arquivo);
     }
     public static void generateLexex(String ruta) {
         File archive = new File(ruta);
