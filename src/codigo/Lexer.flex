@@ -19,6 +19,7 @@ InputCharacter = [^\r\n]
 WhiteSpace     = {LineTerminator} | [ \t\f]
 Alfa = [a-zA-Z]
 AlfaNumerico = [a-zA-Z0-9]
+Caractere = '[a-zA-Z]'
 Identificador = ({Alfa}|_)({AlfaNumerico}|_)*
 IdentificadorMetodo = ({Alfa}|_)({AlfaNumerico}|_)*("!"|"?")?
 Digito = [0-9]
@@ -164,6 +165,8 @@ Matrix = \[?({Array}+\,{Array}+)\]|\[{Array}*\]
 {DecOrInt}("e"|"E")("+"|"-")?{DecOrInt} { return new Tokens("NOTACAO_CIENTIFICA", yytext(), yyline, yycolumn, "Escrita de notação científica"); }
 {Inteiro}					{ return new Tokens("INTEIRO", yytext(), yyline, yycolumn, "Valor de número inteiro."); }
 {Decimal}					{ return new Tokens("DECIMAL", yytext(), yyline, yycolumn, "Valor de número decimal"); }
+{Caractere}                                     { return new Tokens("CARACTERE", yytext(), yyline, yycolumn, "Um caractere como as letras a,b,c"); }
+
 {Array}                                         { return new Tokens("ARRAY", yytext(), yyline, yycolumn, "Array de valores"); }
 {Matrix}                                        { return new Tokens("MATRIX", yytext(), yyline, yycolumn, "Matrix de valores"); }
 \"							{yybegin(STRING); string.setLength(0); }
