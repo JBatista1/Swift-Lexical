@@ -1,3 +1,5 @@
+import Foundation
+
 struct Rule {
     var variable: LanguageElements
     var rules: [[LanguageElements]]

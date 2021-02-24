@@ -1,7 +1,0 @@
- Identificador:IDENTIFICADOR - Valor: teste - Linha: 1 - Descrição: Identificador de métodos, variáveis, constantes, etc
- Identificador:IDENTIFICADOR - Valor: de - Linha: 1 - Descrição: Identificador de métodos, variáveis, constantes, etc
- Identificador:IDENTIFICADOR - Valor: codigo - Linha: 1 - Descrição: Identificador de métodos, variáveis, constantes, etc
- Identificador:IDENTIFICADOR - Valor: teste - Linha: 1 - Descrição: Identificador de métodos, variáveis, constantes, etc
- Identificador:IDENTIFICADOR - Valor: de - Linha: 1 - Descrição: Identificador de métodos, variáveis, constantes, etc
- Identificador:IDENTIFICADOR - Valor: codigo - Linha: 1 - Descrição: Identificador de métodos, variáveis, constantes, etc
- 

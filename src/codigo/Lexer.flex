@@ -48,9 +48,9 @@ RepeatWhile = repeat(" ")*\{
 
 /* Operadores Comparação */
 "=="						   { return new Tokens("IGUALDADE", yytext(), yyline, yycolumn, "Verifica se dois operandos são iguais: (a == a) retorna true, (a == b) retorna false"); }
-"!="						   { return new Tokens("DEIGUALDADE", yytext(), yyline, yycolumn, "Verifica se dois operandos são diferentes: (a == a) retorna false, (a == b) retorna true"); }
+"!="						   { return new Tokens("DESIGUALDADE", yytext(), yyline, yycolumn, "Verifica se dois operandos são diferentes: (a == a) retorna false, (a == b) retorna true"); }
 "==="						   { return new Tokens("IDENTIDADE", yytext(), yyline, yycolumn, "Verifica se duas instâncias de uma classe apontam para a mesma memoria:(classA == classA) retorna true, (classA == classB) retorna false");}
-"!=="						   { return new Tokens("NAOIDENTIDADE", yytext(), yyline, yycolumn, "Verifica se duas instâncias de uma classe não apontam para a mesma memoria:(classA == classA) retorna false, (classA == classB) retorna false");}
+"!=="						   { return new Tokens("NAOIDENTIDADE", yytext(), yyline, yycolumn, "Verifica se duas instâncias de uma classe não apontam para a mesma memoria:(classA == classA) retorna false, (classA == classB) retorna true");}
 "<"						   { return new Tokens("MENOR", yytext(), yyline, yycolumn, "Retorna true se o operando da esquerda for menor que o da direita: a<b"); }
 "<="						   { return new Tokens("MENORIGUAL", yytext(), yyline, yycolumn, "Retorna true se o operando da esquerda for menor ou igual que o da direita: a<=b"); }
 ">"							{ return new Tokens("MAIOR", yytext(), yyline, yycolumn, "Retorna true se o operando da esquerda for maior que o da direita: b>a"); }
@@ -61,7 +61,7 @@ RepeatWhile = repeat(" ")*\{
 "||"					   	{ return new Tokens("ORBOOL", yytext(), yyline, yycolumn, "Operador lógico, retorna true se pelomenos um dos operandos forem true"); }
 "!"					   	{ return new Tokens("NOT", yytext(), yyline, yycolumn, "Inverte o estado da lógica do operando: !true é equivalente a false"); }
 
-/* Operadores bia a bit */
+/* Operadores bit a bit */
 "&"							{ return new Tokens("BITAND", yytext(), yyline, yycolumn, "Operador AND binário: 1010 & 0011 = 0010"); }
 "|"							{ return new Tokens("BITOR", yytext(), yyline, yycolumn, "Operador OR binário: 1010 | 0011 = 1011"); }
 "^"							{ return new Tokens("BITXOR", yytext(), yyline, yycolumn, "Operador binário XOR: 1010 ^ 0011 = 1001"); }
@@ -83,9 +83,10 @@ RepeatWhile = repeat(" ")*\{
 "->"						   { return new Tokens("RETORNOFUNCAO", yytext(), yyline, yycolumn, "Precede o tipo de retorno de uma função func a () -> String" ); }
 
 /* Operadores de intervalo */
-"..."						   { return new Tokens("INTERVALOFECHADO", yytext(), yyline, yycolumn, "Retorna e atribui true se pelomenos um dos operandos for true: A |= B é equivalente a A = A | B" ); }
-"..<"					   	{ return new Tokens("INTERVALOSEMIABERTO", yytext(), yyline, yycolumn, "Retorna e atribui true se pelomenos um dos operandos for true: A |= B é equivalente a A = A | B" ); }
-/* Operadores usuaris */
+"..."						   { return new Tokens("INTERVALOFECHADO", yytext(), yyline, yycolumn, "Retorna um intervalo de valor fechado por exemplo 1..3 retorna os valores 1,2,3" ); }
+"..<"					   	{ return new Tokens("INTERVALOSEMIABERTO", yytext(), yyline, yycolumn, "Retorna um intervalo de valor semiaberto, pois não retorna o ultimo por exemplo 1..3 retorna os valores 1,2" ); }
+
+/* Operadores Comuns */
 "["							{ return new Tokens("COLCHETEABERTO", yytext(), yyline, yycolumn, "Usado em Arrays: ary = [1, \"two\", 3.0]."); }
 "]"							{ return new Tokens("COLCHETEFECHADO", yytext(), yyline, yycolumn, "Usado em Arrays: ary = [1, \"two\", 3.0]."); }
 "{"							{ return new Tokens("CHAVEABERTA", yytext(), yyline, yycolumn, "Usado para delimitar Hash: h = { 7 => 35, \"c\" => 2, \"a\" => 1 }"); }
@@ -93,9 +94,9 @@ RepeatWhile = repeat(" ")*\{
 "("							{ return new Tokens("PARENTESEABERTO", yytext(), yyline, yycolumn, "Usado para limitar um conjundo de dados: \"(1 + 2)*5\" ou \"for a in (1..6)\""); }
 ")"							{ return new Tokens("PARENTESEFECHADO", yytext(), yyline, yycolumn, "Usado para limitar um conjundo de dados: \"(1 + 2)*5\" ou \"for a in (1..6)\""); }
 ";"							{ return new Tokens("PONTOVIRG", yytext(), yyline, yycolumn, "Delimitador de instrução, pode ser omitido."); }
-"."							{ return new Tokens("PONTO", yytext(), yyline, yycolumn, "Usado para trabalhar com objetos: \"arr = Array.new(3)\" ou \"arr.drop(3)\"."); }
+"."							{ return new Tokens("PONTO", yytext(), yyline, yycolumn, "Usado para trabalhar com objetos: \"arr = Array.append(3)\" ou \"arr.remove(3)\"."); }
 ","							{ return new Tokens("VIRGULA", yytext(), yyline, yycolumn, "Usado para separar identificadores e dados: \"ary = [1, \"two\", 3.0]\" ou \"Array.new(3, true)\"."); }
-"?"							{ return new Tokens("INTERROG", yytext(), yyline, yycolumn, "Aplicado noperador ternário"); }
+"?"							{ return new Tokens("INTERROG", yytext(), yyline, yycolumn, "Aplicado noperador ternário ou valor opcional"); }
 ":"							{ return new Tokens("DOISPONTOS", yytext(), yyline, yycolumn,"Aplicado no operador ternário"); }
 
 /* Estruturas condicionais */
@@ -113,14 +114,15 @@ RepeatWhile = repeat(" ")*\{
 
 /* Estruturas de repetição */
 
-/* PALAVRAS sub rotinas */
-"private func"                                  { return new Tokens("PUBLICFUNC", yytext(), yyline, yycolumn, "Permitem que a função seja usada em qualquer arquivo de origem de seu módulo de definição e também em um arquivo de origem de outro módulo que importa o módulo de definição."); }
+/*  Sub rotinas */
+"public func"                                  { return new Tokens("PUBLICFUNC", yytext(), yyline, yycolumn, "Permitem que a função seja usada em qualquer arquivo de origem de seu módulo de definição e também em um arquivo de origem de outro módulo que importa o módulo de definição."); }
 "open func"                                  { return new Tokens("OPENFUNC", yytext(), yyline, yycolumn, "Permitem que a função seja usada em qualquer arquivo de origem de seu módulo de definição e também em um arquivo de origem de outro módulo que importa o módulo de definição."); }
 "internal func"                                  { return new Tokens("INTERNALFUNC", yytext(), yyline, yycolumn, "Permite que função sejam usadas em qualquer arquivo de origem de seu módulo de definição, mas não em qualquer arquivo de origem fora desse módulo."); }
 "fileprivate func"                                  { return new Tokens("FILEPRIVATEFUNC", yytext(), yyline, yycolumn, "Permite que função sejam usadas em qualquer arquivo de origem de seu módulo de definição, mas não em qualquer arquivo de origem fora desse módulo."); }
 "private func"                                  { return new Tokens("FILEPRIVATEFUNC", yytext(), yyline, yycolumn, "restringe o uso da função à declaração anexa e às extensões dessa declaração que estão no mesmo arquivo.."); }
+"static func"                                  { return new Tokens("STATICFUNC", yytext(), yyline, yycolumn, "Define a função que são chamados na porpria class. Também usado para definir membros estáticos."); }
 
-
+/*  Palavras reservadas */
 
 "break"						{ return new Tokens("BREAK", yytext(), yyline, yycolumn, "Sai do loop mais interno. O break não sai da expressão case"); }
 "case"						{ return new Tokens("CASE", yytext(), yyline, yycolumn, "As case expressões também são para execução condicional. sendo que suas comparações equivale ao mesmo que ===."); }
@@ -173,7 +175,6 @@ RepeatWhile = repeat(" ")*\{
 "String"		         { return new Tokens("STRING", yytext(), yyline, yycolumn, "Define uma variavel ou retorno de uma função como Tipo String nome casa"); }
 "Char"		               { return new Tokens("CHAR", yytext(), yyline, yycolumn, "Define uma variavel ou retorno de uma função como Tipo Caractere por exemplo a letra a, b ou c"); }
 "Bool"		         { return new Tokens("BOOL", yytext(), yyline, yycolumn, "Define uma variavel ou retorno de uma função como Tipo Booleano podendo ser True ou False "); }
-
 }
 
 <YYINITIAL> {
