@@ -21,10 +21,10 @@ Alfa = [a-zA-Z]
 AlfaNumerico = [a-zA-Z0-9]
 Caractere = '[a-zA-Z]'
 Identificador = ({Alfa}|_)({AlfaNumerico}|_)*
-IdentificadorMetodo = ({Alfa}|_)({AlfaNumerico}|_)*("!"|"?")?
+ValorOpcional = ({Alfa}|_)({AlfaNumerico}|_)*("!"|"?")?
 Digito = [0-9]
 Inteiro = {Digito}+("_"{Digito}+)*
-Decimal = {Digito}+"."{Digito}+|"."{Digito}+|{Digito}+"."
+Decimal = {Digito}+"."{Digito}+|"."{Digito}+
 DecOrInt = {Decimal}|{Inteiro}
 Array = \[(([a-zA-Z0-9]+\,[a-zA-Z0-9]+))*\]|\[{Identificador}*\]
 Matrix = \[?({Array}+\,{Array}+)\]|\[{Array}*\]
@@ -112,14 +112,12 @@ RepeatWhile = repeat(" ")*\{
 {RepeatWhile}                                          { return new Tokens("REPEATWHILE", yytext(), yyline, yycolumn, "Define uma estrutura de repetição sem condição" ); }
 "while"						{ return new Tokens("WHILE", yytext(), yyline, yycolumn, "Executa o corpo enquanto a expressão de condição retorna verdadeira."); }
 
-/* Estruturas de repetição */
-
 /*  Sub rotinas */
 "public func"                                  { return new Tokens("PUBLICFUNC", yytext(), yyline, yycolumn, "Permitem que a função seja usada em qualquer arquivo de origem de seu módulo de definição e também em um arquivo de origem de outro módulo que importa o módulo de definição."); }
 "open func"                                  { return new Tokens("OPENFUNC", yytext(), yyline, yycolumn, "Permitem que a função seja usada em qualquer arquivo de origem de seu módulo de definição e também em um arquivo de origem de outro módulo que importa o módulo de definição."); }
 "internal func"                                  { return new Tokens("INTERNALFUNC", yytext(), yyline, yycolumn, "Permite que função sejam usadas em qualquer arquivo de origem de seu módulo de definição, mas não em qualquer arquivo de origem fora desse módulo."); }
 "fileprivate func"                                  { return new Tokens("FILEPRIVATEFUNC", yytext(), yyline, yycolumn, "Permite que função sejam usadas em qualquer arquivo de origem de seu módulo de definição, mas não em qualquer arquivo de origem fora desse módulo."); }
-"private func"                                  { return new Tokens("FILEPRIVATEFUNC", yytext(), yyline, yycolumn, "restringe o uso da função à declaração anexa e às extensões dessa declaração que estão no mesmo arquivo.."); }
+"private func"                                  { return new Tokens("PRIVATEFUNC", yytext(), yyline, yycolumn, "Restringe o uso da função à declaração anexa e às extensões dessa declaração que estão no mesmo arquivo."); }
 "static func"                                  { return new Tokens("STATICFUNC", yytext(), yyline, yycolumn, "Define a função que são chamados na porpria class. Também usado para definir membros estáticos."); }
 
 /*  Palavras reservadas */
@@ -127,11 +125,9 @@ RepeatWhile = repeat(" ")*\{
 "break"						{ return new Tokens("BREAK", yytext(), yyline, yycolumn, "Sai do loop mais interno. O break não sai da expressão case"); }
 "case"						{ return new Tokens("CASE", yytext(), yyline, yycolumn, "As case expressões também são para execução condicional. sendo que suas comparações equivale ao mesmo que ===."); }
 "class"						{ return new Tokens("CLASS", yytext(), yyline, yycolumn, "Define uma nova classe."); }
-"do"						   { return new Tokens("DO", yytext(), yyline, yycolumn, "Define uma estrutura de repetição sem condição" ); }
+"do"						   { return new Tokens("DO", yytext(), yyline, yycolumn, "Usado em tratamento de erros" ); }
 "false"						{ return new Tokens("FALSE", yytext(), yyline, yycolumn, "A única instância da classe FalseClass (representa falso)"); }
 "true"						{ return new Tokens("TRUE", yytext(), yyline, yycolumn, "A única instância da classe TrueClass (valor verdadeiro típico)"); }
-"for"						   { return new Tokens("FOR", yytext(), yyline, yycolumn, "Palavra para estrutura de repetição, Executa o corpo para cada elemento no resultado da expressão."); }
-"if"						   { return new Tokens("IF", yytext(), yyline, yycolumn, "Expressãos usadas para execução condicional. Os valores false e nil são falsos, e tudo o mais é verdade."); }
 "in"						   { return new Tokens("IN", yytext(), yyline, yycolumn, "Define um contado para uma estrutura de Repetição For"); }
 "nil"						   { return new Tokens("NIL", yytext(), yyline, yycolumn, "É equivalente a Nulo.a única instância da Classe NilClass (representa falso)"); }
 "return"					   { return new Tokens("RETURN", yytext(), yyline, yycolumn, "Sai do método com o valor de retorno."); }
@@ -167,6 +163,7 @@ RepeatWhile = repeat(" ")*\{
 "Any"		               { return new Tokens("ANY", yytext(), yyline, yycolumn, "Pode ser usado para representar uma instância de qualquer tipo, incluindo tipos de função"); }
 "rethrows"		         { return new Tokens("RETHROWS", yytext(), yyline, yycolumn, " Indica que a função gera um erro apenas se um de seus parâmetros de função gerar um erro"); }
 "print"		         { return new Tokens("PRINT", yytext(), yyline, yycolumn, "Função utilizada para imprimir coisas no console da IDE exemplo print(2)"); }
+"catch"		         { return new Tokens("CATCH", yytext(), yyline, yycolumn, "Usado em tratamento de erros"); }
 
 /* Tipos Comuns */
 "Int"		               { return new Tokens("Int", yytext(), yyline, yycolumn, "Define uma variavel ou retorno de uma função como Tipo Inteiro como 0,1,2,3 ..."); }
@@ -180,7 +177,7 @@ RepeatWhile = repeat(" ")*\{
 <YYINITIAL> {
 /* IDENTIFICADORES */ 
 {Identificador}				{ return new Tokens("IDENTIFICADOR", yytext(), yyline, yycolumn, "Identificador de métodos, variáveis, constantes, etc"); }
-{IdentificadorMetodo}			{ return new Tokens("IDENTIFICADOR_METODO", yytext(), yyline, yycolumn, "Identificador de métodos que utilizam ? ou ! no final"); }
+{ValorOpcional}			{ return new Tokens("VALOROPCIONAL", yytext(), yyline, yycolumn, "Identificador de métodos que utilizam ? para que pode ser null ou ! por que não e null"); }
 
 /* NÚMEROS */
 {DecOrInt}("e"|"E")("+"|"-")?{DecOrInt} { return new Tokens("NOTACAO_CIENTIFICA", yytext(), yyline, yycolumn, "Escrita de notação científica"); }
